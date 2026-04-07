@@ -1,0 +1,13 @@
+{
+  "name": "mermaid-markdown-image-render",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Render Mermaid diagrams from Markdown or .mmd files into image files.",
+  "scripts": {
+    "render": "node scripts/render_mermaid_from_markdown.js",
+    "test:render": "node scripts/render_mermaid_from_markdown.js --input examples/diagrams.md --output-dir verify_output --format png --prefix sample --puppeteer-config puppeteer-config.edge.windows.json"
+  },
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.2"
+  }
+}

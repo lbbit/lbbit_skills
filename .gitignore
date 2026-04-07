@@ -2,3 +2,5 @@
 __pycache__/
 *.py[cod]
 keyword-index-image-download/verify_images/
+mermaid-markdown-image-render/node_modules/
+mermaid-markdown-image-render/verify_output/
