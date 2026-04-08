@@ -1,0 +1,15 @@
+{
+  "name": "html-card-image-render",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Render HTML/JSON/Markdown/TXT into polished card images.",
+  "scripts": {
+    "render": "node scripts/render_card_image.js",
+    "test:render:json": "node scripts/render_card_image.js --input examples/architecture_card.json --output verify_output/architecture_card.png --width 1800 --height 1100 --theme architect --puppeteer-config puppeteer-config.edge.windows.json",
+    "test:render:md": "node scripts/render_card_image.js --input examples/code_card.md --output verify_output/code_card.png --width 1600 --height 1000 --theme sunset --puppeteer-config puppeteer-config.edge.windows.json",
+    "test:render:html": "node scripts/render_card_image.js --input examples/dashboard_card.html --output verify_output/dashboard_card.png --width 1600 --height 1000 --selector .dashboard --puppeteer-config puppeteer-config.edge.windows.json"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.8.0"
+  }
+}

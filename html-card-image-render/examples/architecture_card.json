@@ -1,0 +1,25 @@
+{
+  "eyebrow": "ARCHITECTURE",
+  "title": "典型嵌入式 SoC 内部结构",
+  "subtitle": "面向 AI 推理与实时控制的异构协同",
+  "description": "通过统一总线连接 CPU/GPU/NPU/DSP，并结合片上缓存与外部 DRAM，平衡性能与功耗。",
+  "tags": ["SoC", "CPU", "GPU", "NPU", "DSP", "AXI", "DRAM", "SRAM"],
+  "metrics": [
+    { "label": "计算核心", "value": "4" },
+    { "label": "主要总线", "value": "AXI/AHB" },
+    { "label": "访存层级", "value": "2 Tier" },
+    { "label": "目标", "value": "Low Latency" }
+  ],
+  "bullets": [
+    "CPU 负责通用逻辑控制和任务调度",
+    "GPU 负责图形渲染与并行计算",
+    "NPU 面向 AI 推理，提供高能效加速",
+    "DSP 处理音频和信号计算链路",
+    "统一总线打通核心与存储，降低数据搬运成本"
+  ],
+  "code": {
+    "language": "pseudo",
+    "content": "dispatch(task) -> {cpu|gpu|npu|dsp}\nmem.route = \"AXI\"\ncache.policy = \"latency-first\""
+  },
+  "footer": "示例：html-card-image-render / JSON 输入"
+}

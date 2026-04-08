@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: radial-gradient(circle at 8% 10%, #e7f8ef 0%, #f3fbf7 45%, #ebf8f1 100%);
+        color: #193128;
+      }
+      .dashboard {
+        width: 1320px;
+        margin: 40px auto;
+        padding: 28px;
+        border-radius: 28px;
+        border: 1px solid rgba(37, 109, 73, 0.2);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 18px 44px rgba(11, 51, 33, 0.16);
+      }
+      .title {
+        margin: 0 0 18px;
+        font-size: 42px;
+        letter-spacing: -0.02em;
+      }
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .kpi {
+        border: 1px solid rgba(37, 109, 73, 0.2);
+        border-radius: 14px;
+        padding: 14px 16px;
+        background: #ffffff;
+      }
+      .kpi .value {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .kpi .label {
+        margin: 4px 0 0;
+        color: #4f6a5f;
+      }
+      .layout {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 14px;
+      }
+      .panel {
+        border: 1px solid rgba(37, 109, 73, 0.2);
+        border-radius: 14px;
+        padding: 14px;
+        background: #ffffff;
+      }
+      .panel h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+      .bars {
+        display: grid;
+        gap: 8px;
+      }
+      .bar {
+        display: grid;
+        grid-template-columns: 90px 1fr 50px;
+        align-items: center;
+        gap: 10px;
+      }
+      .line {
+        height: 10px;
+        border-radius: 999px;
+        background: #e9f4ee;
+        position: relative;
+      }
+      .line > i {
+        position: absolute;
+        inset: 0 auto 0 0;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #26a96f, #2fca86);
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        line-height: 1.65;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="dashboard">
+      <h1 class="title">运营健康度卡片</h1>
+      <div class="kpi-grid">
+        <article class="kpi"><p class="value">99.95%</p><p class="label">服务可用性</p></article>
+        <article class="kpi"><p class="value">12.4ms</p><p class="label">P99 延迟</p></article>
+        <article class="kpi"><p class="value">18,240</p><p class="label">日活设备</p></article>
+        <article class="kpi"><p class="value">0.18%</p><p class="label">异常率</p></article>
+      </div>
+      <div class="layout">
+        <article class="panel">
+          <h3>模块负载</h3>
+          <div class="bars">
+            <div class="bar"><span>调度层</span><div class="line"><i style="width: 72%"></i></div><span>72%</span></div>
+            <div class="bar"><span>推理层</span><div class="line"><i style="width: 64%"></i></div><span>64%</span></div>
+            <div class="bar"><span>存储层</span><div class="line"><i style="width: 41%"></i></div><span>41%</span></div>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>本周要点</h3>
+          <ul>
+            <li>高峰期自动扩容策略生效，延迟下降 11%</li>
+            <li>新增熔断告警阈值，误报明显减少</li>
+            <li>建议优先优化推理队列热分片策略</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </body>
+</html>

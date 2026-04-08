@@ -4,3 +4,6 @@ __pycache__/
 keyword-index-image-download/verify_images/
 mermaid-markdown-image-render/node_modules/
 mermaid-markdown-image-render/verify_output/
+html-card-image-render/node_modules/
+html-card-image-render/verify_output/*
+!html-card-image-render/verify_output/.gitkeep
