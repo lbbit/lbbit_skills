@@ -8,8 +8,9 @@ import requests
 from requests.exceptions import RequestException, Timeout
 
 CONVERT_URL = "https://md2word.com/api/convert"
-DEFAULT_TIMEOUT = 120
+DEFAULT_TIMEOUT = 180
 LARGE_FILE_TIMEOUT = 300
+MEDIUM_FILE_BYTES = 128 * 1024
 LARGE_FILE_BYTES = 512 * 1024
 DEFAULT_RETRIES = 2
 CHUNK_SIZE = 1024 * 256
@@ -29,7 +30,11 @@ def detect_timeout(input_path: Path, user_timeout: int | None) -> int:
         size = input_path.stat().st_size
     except OSError:
         return DEFAULT_TIMEOUT
-    return LARGE_FILE_TIMEOUT if size >= LARGE_FILE_BYTES else DEFAULT_TIMEOUT
+    if size >= LARGE_FILE_BYTES:
+        return LARGE_FILE_TIMEOUT
+    if size >= MEDIUM_FILE_BYTES:
+        return DEFAULT_TIMEOUT
+    return 120
 
 
 def load_markdown(input_path: Path) -> str:
