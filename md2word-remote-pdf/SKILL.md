@@ -33,7 +33,7 @@ description: 使用 md2word.com 的在线转换接口，将本地 Markdown 文�
 - `auto_fix` 默认关闭
 - 使用 `md2word.com/api/convert` 发起转换
 - 成功后下载返回的 `download_url`
-- 默认启用超时自适应：小文件默认 120 秒，大于等于 512 KB 的 Markdown 默认 300 秒
+- 默认启用超时自适应：小文件默认 120 秒，中等文件（>= 128 KB）默认 180 秒，大文件（>= 512 KB）默认 300 秒
 - 默认对超时/网络错误自动重试 2 次
 
 ## 调用步骤
@@ -64,7 +64,7 @@ python skills/md2word-remote-pdf/scripts/md2word_remote_pdf.py --input "<markdow
 - `--input`：必填，本地 Markdown 文件路径
 - `--output`：可选，输出 PDF 路径；不填则默认同名 `.pdf`
 - `--auto-fix`：可选，开启站点的 `auto_fix=true`
-- `--timeout`：可选，默认 `0`，表示自动判断超时；小文件默认 120 秒，大文件默认 300 秒
+- `--timeout`：可选，默认 `0`，表示自动判断超时；小文件默认 120 秒，中等文件默认 180 秒，大文件默认 300 秒
 - `--retries`：可选，默认 `2`，当发生超时或网络错误时自动重试
 
 ## 输出说明
