@@ -11,6 +11,7 @@
 | 🖼️ | [keyword-index-image-download](keyword-index-image-download) | 使用关键词(keyword) + 序号(index)下载单张图片到本地，适用于配图抓取和自动化素材生成。 |
 | 📊 | [mermaid-markdown-image-render](mermaid-markdown-image-render) | 基于 Mermaid + Markdown(JavaScript) 将流程图、时序图、状态转移图等渲染为 PNG/SVG/PDF 图片。 |
 | 🧩 | [html-card-image-render](html-card-image-render) | 将 HTML/JSON/Markdown/TXT 渲染为高质量卡片图片，适用于 PPT 架构图、数据看板、代码讲解等视觉化场景。 |
+| 📈 | [shiso-leaf-stock-methodology](shiso-leaf-stock-methodology) | 用“紫苏叶理论 / 瓶颈点理论”提炼股票研究、候选筛选、风险否决和排序方法论。 |
 
 ## 典型图片生成用法（简洁示例）
 
