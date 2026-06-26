@@ -1,0 +1,24 @@
+{
+  "eyebrow": "EMLOG API WORKFLOW",
+  "title": "内容发布自动化链路",
+  "subtitle": "从素材整理到草稿审核的可复用流程",
+  "description": "把手工后台操作拆解为可验证的 API 步骤，让图片、正文、分类和草稿状态都能被统一管理。",
+  "tags": ["素材", "上传", "草稿", "验证"],
+  "metrics": [
+    { "label": "核心步骤", "value": "5" },
+    { "label": "默认状态", "value": "草稿" },
+    { "label": "验证方式", "value": "详情回读" }
+  ],
+  "bullets": [
+    "AI 或人工整理文章正文与配图需求",
+    "通过 upload 接口上传图片并获取正式 URL",
+    "调用 article_post 写入草稿箱",
+    "读取 draft_detail 校验标题、图片、分类和标签",
+    "人工审核后再进入正式发布环节"
+  ],
+  "code": {
+    "language": "flow",
+    "content": "source -> upload(file) -> article_post(draft=y)\n        -> draft_detail(id) -> review -> publish"
+  },
+  "footer": "适用于技术博客、资料整理和 AI 辅助写作"
+}

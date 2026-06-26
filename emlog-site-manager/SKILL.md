@@ -144,6 +144,49 @@ python emlog-site-manager/scripts/emlog_api.py article update --site main --id 1
 python emlog-site-manager/scripts/emlog_api.py upload --site main --file ".\cover.png" --sid 1
 ```
 
+## 图文技术文章流程示例
+
+当用户要求“写一篇带图片的技术文章并放入草稿箱”时，按以下流程执行。
+
+1. 明确文章主题和读者收益。
+  - 标题要直接表达技术主题，不使用泛泛的营销标题。
+  - 正文至少包含一个完整问题背景、一个可落地流程和一个质量检查或避坑段落。
+
+2. 先规划图片，再写正文。
+  - 一篇正式图文技术文章建议包含 2-4 张图片。
+  - 图片必须服务文章结构，避免只放无关封面图。
+  - 推荐图片组合：首图为主流程/架构总览，中段为关键机制图，后段为检查清单/对比表。
+
+3. 生成或选择本地图片素材。
+  - 若仓库已有匹配图片，可直接复用。
+  - 若缺少匹配图片，优先用 `html-card-image-render` 生成结构化技术卡片图。
+  - 图片文件建议保存在 `emlog-site-manager/examples/article-images/`，源文件和输出图都保留，方便后续复用。
+
+4. 上传图片并记录 URL。
+
+```powershell
+python emlog-site-manager/scripts/emlog_api.py upload --site main --file ".\emlog-site-manager\examples\article-images\cover.png"
+python emlog-site-manager/scripts/emlog_api.py upload --site main --file ".\emlog-site-manager\examples\article-images\detail.png"
+```
+
+5. 写 Markdown 源稿。
+  - 正文中的图片使用上传后返回的正式 URL，不使用本地路径。
+  - 首图应和文章主题最贴合，并同步作为 `--cover`。
+  - 图片前后要有解释文字，让图片成为论证的一部分。
+
+6. 写入草稿箱。
+
+```powershell
+python emlog-site-manager/scripts/emlog_api.py article post --site main --title "文章标题" --content-file ".\emlog-site-manager\examples\article.md" --sort-id 2 --tags "EMLOG,API,自动化" --cover "https://cdn.example.com/cover.png" --draft y
+```
+
+7. 回读草稿详情并做质量检查。
+  - `code == 0`。
+  - 标题、分类、标签和封面正确。
+  - 正文至少包含 2 张主题相关图片。
+  - 所有图片 URL 都是远程可访问地址。
+  - 内容仍保持草稿状态，等待用户后台审核。
+
 ## API 能力速查
 
 无需鉴权的常用接口：

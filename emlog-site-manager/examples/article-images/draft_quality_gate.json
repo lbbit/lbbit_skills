@@ -1,0 +1,25 @@
+{
+  "eyebrow": "QUALITY GATE",
+  "title": "草稿发布前检查清单",
+  "subtitle": "让自动化写入保持可控、可审、可回滚",
+  "description": "写入草稿不是流程终点。每次写操作后都要回读详情，把技术文章的结构、图片和元数据确认清楚。",
+  "tags": ["草稿", "回读", "封面", "审核"],
+  "metrics": [
+    { "label": "检查项", "value": "6" },
+    { "label": "风险等级", "value": "低" },
+    { "label": "建议动作", "value": "人工确认" }
+  ],
+  "bullets": [
+    "标题是否准确表达技术主题",
+    "正文是否包含至少两张相关图片",
+    "封面图是否与首屏内容一致",
+    "分类、标签和摘要是否便于检索",
+    "代码块、链接和图片 URL 是否可访问",
+    "确认无误后再从草稿切换为发布"
+  ],
+  "code": {
+    "language": "checklist",
+    "content": "assert title && content && cover\nassert images.length >= 2\nassert draft_detail(id).code == 0"
+  },
+  "footer": "自动化负责效率，草稿箱负责质量缓冲"
+}

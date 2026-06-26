@@ -1,0 +1,24 @@
+{
+  "eyebrow": "API AUTHENTICATION",
+  "title": "签名鉴权数据流",
+  "subtitle": "优先使用环境变量，避免密钥进入仓库与日志",
+  "description": "EMLOG 管理接口默认走 req_time + req_sign。工具层负责生成签名，使用者只需要维护密钥来源。",
+  "tags": ["EMLOG_API_KEY", "req_time", "req_sign", "MD5"],
+  "metrics": [
+    { "label": "密钥来源", "value": "环境变量优先" },
+    { "label": "签名算法", "value": "MD5" },
+    { "label": "传输位置", "value": "Form/Query" }
+  ],
+  "bullets": [
+    "先读取 EMLOG_API_KEY，缺失时读取本地忽略配置",
+    "用 Unix 时间戳生成 req_time",
+    "计算 md5(req_time + api_key) 得到 req_sign",
+    "把鉴权参数随业务参数一起提交",
+    "失败时优先排查密钥、时间和 API 开关"
+  ],
+  "code": {
+    "language": "pseudo",
+    "content": "api_key = env.EMLOG_API_KEY || local_config.api_key\nreq_time = now()\nreq_sign = md5(req_time + api_key)"
+  },
+  "footer": "密钥不进入 Git，环境变量覆盖本地记录"
+}
