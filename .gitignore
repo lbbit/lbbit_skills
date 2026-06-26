@@ -7,3 +7,4 @@ mermaid-markdown-image-render/verify_output/
 html-card-image-render/node_modules/
 html-card-image-render/verify_output/*
 !html-card-image-render/verify_output/.gitkeep
+emlog-site-manager/config/*.local.json

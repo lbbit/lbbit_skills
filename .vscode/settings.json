@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^New-Item -ItemType Directory -Path \"docs/readme-images\" -Force \\| Out-Null; Copy-Item \"keyword-index-image-download/verify_images/cat_0\\.jpg\" \"docs/readme-images/keyword-cat\\.jpg\" -Force; Copy-Item \"mermaid-markdown-image-render/verify_output/sample_1\\.png\" \"docs/readme-images/mermaid-sample-1\\.png\" -Force; Copy-Item \"html-card-image-render/verify_output/architecture_card\\.png\" \"docs/readme-images/html-card-architecture\\.png\" -Force$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
