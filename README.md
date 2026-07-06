@@ -12,6 +12,7 @@
 | 📊 | [mermaid-markdown-image-render](mermaid-markdown-image-render) | 基于 Mermaid + Markdown(JavaScript) 将流程图、时序图、状态转移图等渲染为 PNG/SVG/PDF 图片。 |
 | 🧩 | [html-card-image-render](html-card-image-render) | 将 HTML/JSON/Markdown/TXT 渲染为高质量卡片图片，适用于 PPT 架构图、数据看板、代码讲解等视觉化场景。 |
 | 📈 | [shiso-leaf-stock-methodology](shiso-leaf-stock-methodology) | 用“紫苏叶理论 / 瓶颈点理论”提炼股票研究、候选筛选、风险否决和排序方法论。 |
+| 🔎 | [abnormal-signal-investing](abnormal-signal-investing) | 从涨价、缺货、排队等日常异常信号出发，探索可验证的产业机会和投资研究清单。 |
 | 🛠️ | [emlog-site-manager](emlog-site-manager) | 基于 EMLOG 官方 API 管理站点内容，支持 API 密钥配置、文章、草稿、分类、微语笔记和资源上传。 |
 
 ## 典型图片生成用法（简洁示例）
