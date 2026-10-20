@@ -1,0 +1,114 @@
+/* md2pdf 打印样式：A4、中文字体、全边框表格 */
+@page {
+  size: A4;
+  margin: 18mm 16mm 18mm 16mm;
+}
+
+html {
+  font-size: 10.5pt;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "SimSun", sans-serif;
+  line-height: 1.65;
+  color: #1a1a1a;
+  margin: 0 auto;
+  word-break: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 1.4em 0 0.7em;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+h1 { font-size: 20pt; border-bottom: 2px solid #2c3e50; padding-bottom: 6px; }
+h2 { font-size: 15pt; border-bottom: 1px solid #b9c4cf; padding-bottom: 4px; }
+h3 { font-size: 12.5pt; }
+h4 { font-size: 11pt; }
+
+p { margin: 0.55em 0; text-align: justify; }
+
+/* 表格：核心修复点 —— 所有单元格必须有可见边框 */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: auto;
+  max-width: 100%;
+  margin: 0.8em 0;
+  background: #fff;
+  page-break-inside: auto;
+}
+thead { display: table-header-group; } /* 跨页重复表头 */
+tr { page-break-inside: avoid; break-inside: avoid; }
+th, td {
+  border: 1px solid #7f8c8d !important;
+  padding: 4px 8px;
+  vertical-align: top;
+  text-align: left;
+}
+th {
+  background: #eef2f6;
+  font-weight: 700;
+}
+tbody tr:nth-child(even) td { background: #fafbfc; }
+
+code, pre {
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 9pt;
+}
+pre {
+  background: #f6f8fa;
+  border: 1px solid #d8dee4;
+  border-radius: 4px;
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  page-break-inside: avoid;
+}
+code { background: #f0f2f4; padding: 1px 4px; border-radius: 3px; }
+pre code { background: none; padding: 0; }
+
+blockquote {
+  margin: 0.8em 0;
+  padding: 6px 14px;
+  border-left: 4px solid #3b82f6;
+  background: #f5f8fd;
+  color: #333;
+}
+
+img { max-width: 100%; }
+
+hr {
+  border: none;
+  border-top: 1px dashed #aab4be;
+  margin: 1.2em 0;
+}
+
+ul, ol { padding-left: 1.8em; }
+li { margin: 0.25em 0; }
+
+a { color: inherit; text-decoration: none; }
+
+/* pandoc 目录 */
+nav#TOC ul { list-style: none; padding-left: 1.2em; }
+nav#TOC > ul { padding-left: 0; }
+nav#TOC li { margin: 0.2em 0; }
+
+/* mermaid 图表容器（pandoc 输出 pre.mermaid，渲染后替换为 svg） */
+pre.mermaid, div.mermaid {
+  background: none;
+  border: none;
+  text-align: center;
+  page-break-inside: avoid;
+}
+pre.mermaid svg, .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-render-failed {
+  border: 1px solid #e74c3c !important;
+  background: #fdf3f2 !important;
+  white-space: pre-wrap;
+}
