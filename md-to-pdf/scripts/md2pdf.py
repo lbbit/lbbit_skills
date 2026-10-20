@@ -134,11 +134,122 @@ def print_pdf(browser: str, html_file: Path, pdf_out: Path, workdir: Path, timeo
     return pdf_out.exists()
 
 
+_MD_INLINE_RE = re.compile(r"[*_`~]|\[([^\]]*)\]\([^)]*\)|!\[[^\]]*\]\([^)]*\)")
+
+
+def _clean_heading_title(text: str) -> str:
+    text = _MD_INLINE_RE.sub(lambda m: m.group(1) if m.group(1) else "", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def collect_md_headings(md_path: Path, toc_depth: int) -> list[tuple[int, str]]:
+    """按出现顺序收集 markdown 标题 (level, clean_title)，跳过代码块内的 #。"""
+    headings: list[tuple[int, str]] = []
+    in_fence = False
+    for line in md_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
+        if m and len(m.group(1)) <= toc_depth:
+            title = _clean_heading_title(m.group(2))
+            if title and title.upper() != "[TOC]":
+                headings.append((len(m.group(1)), title))
+    return headings
+
+
+def _norm_key(s: str) -> str:
+    return re.sub(r"\s+", "", s).lower()
+
+
+def inject_bookmarks(pdf_path: Path, headings: list[tuple[int, str]]) -> bool:
+    """用 PyMuPDF 把标题映射到页码并写入 PDF outline（书签）。返回是否成功。"""
+    try:
+        import pymupdf as fitz
+    except ImportError:
+        print("[md2pdf] WARN: pymupdf not installed; skipping bookmarks (pip install pymupdf)", file=sys.stderr)
+        return False
+    if not headings:
+        return False
+    doc = fitz.open(pdf_path)
+
+    def norm(s: str) -> str:
+        return _norm_key(s)
+
+    # 1) 优先用 pandoc TOC 生成的内部链接(锚点)精确映射 title->page，
+    #    避免目录页上列出的标题文本导致书签误跳到目录本身。
+    anchor_map: dict[str, int] = {}
+    toc_page_candidates: set[int] = set()
+    for pno in range(doc.page_count):
+        page_links = doc[pno].get_links()
+        if any(isinstance(l.get("page"), int) for l in page_links):
+            toc_page_candidates.add(pno)
+            for l in page_links:
+                if not isinstance(l.get("page"), int):
+                    continue
+                txt = doc[pno].get_textbox(fitz.Rect(l["from"])) or ""
+                key = norm(txt.splitlines()[0]) if txt.strip() else ""
+                if key:
+                    anchor_map.setdefault(key, l["page"] + 1)
+    # 含大量目录条目的页面视为目录页，兜底匹配时跳过
+    heading_keys_all = {norm(t) for _, t in headings}
+    pages_norm = [re.sub(r"\s+", "", doc[i].get_text() or "").lower() for i in range(doc.page_count)]
+
+    def is_toc_like(pno: int) -> bool:
+        return sum(1 for k in heading_keys_all if k in pages_norm[pno]) >= 5
+
+    toc: list[list] = []
+    cursor = 0
+    for level, title in headings:
+        key = norm(title)
+        found = anchor_map.get(key)
+        if found is None:
+            for p in range(cursor, len(pages_norm)):
+                if is_toc_like(p):
+                    continue
+                if key in pages_norm[p]:
+                    found = p + 1
+                    break
+        if found is not None:
+            toc.append([level, title, found])
+            cursor = max(cursor, found - 1)
+    doc.close()
+    if not toc:
+        return False
+    missing = len(headings) - len(toc)
+    if missing:
+        print(f"[md2pdf] WARN: {missing} heading(s) not located in PDF and were skipped from bookmarks", file=sys.stderr)
+    # 规范化层级：首项必须为 1，且相邻项最多下降一级（PyMuPDF set_toc 要求）
+    normed: list[list] = []
+    base = None
+    prev = 0
+    for level, title, page in toc:
+        if base is None:
+            base = level
+        lvl = max(1, level - base + 1)
+        if lvl > prev + 1:
+            lvl = prev + 1
+        prev = lvl
+        normed.append([lvl, title, page])
+    toc = normed
+    doc = fitz.open(pdf_path)
+    doc.set_toc(toc)
+    tmp = pdf_path.with_suffix(".bm.tmp.pdf")
+    doc.save(tmp, garbage=3, deflate=True)
+    doc.close()
+    tmp.replace(pdf_path)
+    return True
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Markdown -> PDF (pandoc + headless browser)")
     ap.add_argument("input", help="input .md file")
     ap.add_argument("-o", "--output", help="output .pdf path (default: alongside input)")
     ap.add_argument("--toc-depth", type=int, default=3)
+    ap.add_argument("--no-bookmarks", action="store_true", help="skip injecting PDF outline/bookmarks")
     ap.add_argument("--css", action="append", default=[], help="extra css files appended after built-in style")
     ap.add_argument("--browser", help="path to chrome/edge executable")
     ap.add_argument("--keep-html", action="store_true", help="keep intermediate html for debugging")
@@ -165,6 +276,10 @@ def main() -> None:
                 break
         if not ok:
             die("all candidate browsers failed to produce a PDF")
+        if not args.no_bookmarks:
+            headings = collect_md_headings(md_path, max(args.toc_depth, 6))
+            if inject_bookmarks(pdf_out, headings):
+                print(f"[md2pdf] bookmarks injected: {len(headings)} heading(s)")
         size_kb = pdf_out.stat().st_size / 1024
         print(f"[md2pdf] OK -> {pdf_out} ({size_kb:.0f} KB)")
     finally:

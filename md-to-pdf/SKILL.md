@@ -8,10 +8,11 @@ description: 高质量本地 Markdown 转 PDF。使用 pandoc + 无头浏览器(
 ## 用法
 
 ```bash
-python c:/Users/admin/.copilot/skills/md-to-pdf/scripts/md2pdf.py input.md [-o output.pdf] [--toc-depth N] [--browser PATH] [--css extra.css] [--keep-html]
+python c:/Users/admin/.copilot/skills/md-to-pdf/scripts/md2pdf.py input.md [-o output.pdf] [--toc-depth N] [--browser PATH] [--css extra.css] [--keep-html] [--no-bookmarks]
 ```
 
 - 默认输出到输入文件同目录同名 `.pdf`
+- **PDF 书签（outline）**：打印后用 PyMuPDF(pymupdf) 注入。优先用 pandoc TOC 生成的内部链接锚点精确映射标题→页码（避免误跳到目录页），无锚点的深层标题再用去空白全文匹配兜底；层级会规范化为首项 L1、逐级连续（PyMuPDF set_toc 硬性要求）。依赖 `pip install pymupdf`，缺失时自动跳过并警告
 - `--keep-html`：保留中间 HTML（调试用），用于人工检查样式/mermaid
 - `--browser`：指定 Chrome/Edge 可执行文件；脚本会自动在候选列表间回退（本机实测 Chrome 会挂起、Edge 正常，属已知现象）
 
